@@ -1,12 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
-using UnityEngine.UI;	//Allows us to use UI.
+using UnityEngine.UI;
 
-namespace Completed
-{
-	//Player inherits from MovingObject, our base class for objects that can move, Enemy also inherits from this.
-	public class Player : MovingObject
-	{
+
+public class Player : MovingObject {
+
 	public int wallDamage = 1;
 	public int pointsPerFood = 10;
 	public int pointsPerSoda = 20;
@@ -116,6 +114,4 @@ namespace Completed
 		if (food <= 0)
 			GameManager.instance.GameOver ();
 	}
-	}
 }
-

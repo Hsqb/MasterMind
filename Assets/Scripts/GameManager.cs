@@ -1,14 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
-  
 using System.Collections.Generic;
 using UnityEngine.UI;
 
-namespace Completed
-
-{
-public class GameManager : MonoBehaviour
-{
+public class GameManager : MonoBehaviour {
 
 	public float levelStartDelay = 2f;
 	public float turnDelay = .1f;
@@ -113,5 +108,3 @@ public class GameManager : MonoBehaviour
 
 	}
 }
-}
-

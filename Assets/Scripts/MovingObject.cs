@@ -1,12 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-namespace Completed
+public abstract class MovingObject : MonoBehaviour 
 {
-	//The abstract keyword enables you to create classes and class members that are incomplete and must be implemented in a derived class.
-	public abstract class MovingObject : MonoBehaviour
-	{
-		public float moveTime = 0.1f;
+
+	public float moveTime = 0.1f;
 	public LayerMask blockingLayer;
 
 
@@ -76,4 +74,8 @@ namespace Completed
 			where T : Component;
 		
 	}
-}
+
+
+
+
+
