@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class Loader : MonoBehaviour {
 
@@ -11,6 +12,9 @@ public class Loader : MonoBehaviour {
 	{
 		if (GameManager.instance == null)
 			Instantiate (gameManager);
+
+		//GameManager.GetInstance().InitGame();
+		//Debug.Log ("InitGame");
 	}
 
 }
