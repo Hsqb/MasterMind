@@ -9,10 +9,10 @@ public class WarField {
 	private int turn;
 	public WarField(){
 		turn = 1;
-		masterMind = new EnemyAi();
-		warMachine = new OurAi();
+		masterMind = new EnemyAi(2000, 100);
+		warMachine = new OurAi(500, 10);
 	}
-	public int getCurrentTurn(){
+	public int GetCurrentTurn(){
 		return this.turn;
 	}
 	public void nextTurn(int x){
@@ -21,44 +21,143 @@ public class WarField {
 }
 
 public abstract class Ai {
-	private int hp;
-	private Army army;
-	public int getHp();
-	public void addHp(int hp);
-	public void subHp(int hp);
-	public Army getArmy();
+	protected int hp;
+    protected Army army;
+	public abstract int GetHp();
+	public abstract void AddHp(int hp);
+	public abstract void SubHp(int hp);
+	public abstract Army GetArmy();
 }
 
 public class EnemyAi : Ai{
-	public override int getHp(){
+
+    public EnemyAi(int pHp, int pArmyNum)
+    {
+        this.hp = pHp;
+        this.army = new Army(pArmyNum);
+    }
+	public override int GetHp(){
 		return this.hp;
 	}
-	public override void addHp(int hp){
+	public override void AddHp(int hp){
 		if(hp < 0) hp = 0;
 		this.hp += hp;
 	}
-	public override void subHp(int hp){
+	public override void SubHp(int hp){
 		if(hp < 0) hp = 0;
 		this.hp += hp;
 	}
-	public override Army getArmy(){
+	public override Army GetArmy(){
 		return this.army;
-	};
+	}
 }
 
 public class OurAi : Ai{
-	public override int getHp(){
+    public OurAi(int pHp, int pArmyNum)
+    {
+        this.hp = pHp;
+        this.army = new Army(pArmyNum);
+    }
+
+    public override int GetHp(){
 		return this.hp;
 	}
-	public override void addHp(int hp){
+	public override void AddHp(int hp){
 		if(hp < 0) hp = 0;
 		this.hp += hp;
 	}
-	public override void subHp(int hp){
+	public override void SubHp(int hp){
 		if(hp < 0) hp = 0;
 		this.hp += hp;
 	}
-	public override Army getArmy(){
+	public override Army GetArmy(){
 		return this.army;
-	};
+	}
+}
+
+public class Army
+{
+    private int armyNum;
+
+    public Army(int armyNum)
+    {
+        this.armyNum = armyNum;
+    }
+    public int GetArmyNum()
+    {
+        return this.armyNum;
+    }
+    public void SetArmyNum(int armyNum)
+    {
+        this.armyNum = armyNum;
+    }
+
+}
+public class AP
+{
+    private const int MAX_AP = 5;
+    private const int INIT_AP = 2;
+    private int currentAp;
+    private int currentMaxAP;
+    public AP()
+    {
+        this.currentAp = AP.INIT_AP;
+        this.currentMaxAP = AP.INIT_AP;
+    }
+    public bool SubCurrentAp()
+    {
+        if(this.currentAp < 1)
+        {
+            return false;
+        }else
+        {
+            this.currentAp--;
+            return true;
+        }
+    }
+    public bool ResetCurrentAp()
+    {
+        if (this.currentAp > 0)
+        {
+            return false;
+        }
+        else
+        {
+            this.currentAp = this.currentMaxAP;
+            return true;
+        }
+    }
+    public bool AddCurrentMaxAp()
+    {
+        if (this.currentMaxAP >= AP.MAX_AP)
+        {
+            return false;
+        }
+        else
+        {
+            this.currentMaxAP++;
+            return true;
+        }
+    }
+}
+
+public class Wallet
+{
+
+}
+public class Price
+{
+
+}
+public class Building
+{
+    
+}
+public class Facility : Building
+{
+
+}
+public class AdvFacility : Building
+{
+
 }
