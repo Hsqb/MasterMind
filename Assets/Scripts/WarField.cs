@@ -143,8 +143,16 @@ public class AP
 
 public class Wallet
 {
+<<<<<<< HEAD
 	public int Electro = 0;
 	public int Ingot = 133;
+=======
+	public Wallet(){
+		this.resourceContainer = new int[5];
+	}
+	private int[] resourceContainer;
+
+>>>>>>> 63c66cfe00074728c6846900352a643f4c26ced6
 }
 public class Price
 {
