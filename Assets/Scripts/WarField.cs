@@ -143,7 +143,8 @@ public class AP
 
 public class Wallet
 {
-
+	public int Electro = 0;
+	public int Ingot = 133;
 }
 public class Price
 {
