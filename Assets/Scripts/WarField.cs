@@ -143,6 +143,10 @@ public class AP
 
 public class Wallet
 {
+	public Wallet(){
+		this.resourceContainer = new int[5];
+	}
+	private int[] resourceContainer;
 
 }
 public class Price
