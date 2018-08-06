@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using System.Linq.Expressions;
 
 public class WarField {
 	public EnemyAi masterMind;
@@ -56,12 +57,15 @@ public class OurAi : Ai{
 
     private ResourceMaganer rm;
     private ArrayList facs;
+    private AP ap;
     public OurAi(int pHp, int pArmyNum)
     {
         this.hp = pHp;
         this.army = new Army(pArmyNum);
         this.rm = new ResourceMaganer();
-        facs = new ArrayList();
+        this.facs = new ArrayList();
+        this.InitFacs();
+        this.ap = new AP();
     }
 
     public override int GetHp(){
@@ -82,6 +86,11 @@ public class OurAi : Ai{
     {
         return this.rm;
     }
+    private void InitFacs()
+    {
+
+    }
+
 }
 
 public class Army
@@ -231,23 +240,42 @@ public class Resources
 public class Building
 {
     private int buildingId;
+    private bool isActivated;
     private string name;
+    private string displayStringActivated;
+    private string displayStringInactivated;
+
     private Resources price;
 
-    public Building(int pBuildingId,string pName, Resources pPrice)
+    public Building(int pBuildingId,
+        string pName, 
+        string pDisplayStringActivated,
+        string pDisplayStringInactivated,
+        Resources pPrice)
     {
         this.buildingId = pBuildingId;
         this.name = pName;
         this.price = pPrice;
+        this.isActivated = false;
+        this.displayStringActivated = pDisplayStringActivated;
+        this.displayStringInactivated = pDisplayStringInactivated;
     }
 
     public virtual void OnClickListener() {
         Debug.Log("Building Object On Click");
     }
+    public string GetDisplayString()
+    {
+        return this.isActivated ? this.displayStringActivated : this.displayStringInactivated;
+    }
 }
 public class Facility : Building
 {
-    public Facility(int pBuildingId, string pName, Resources pPrice) : base(pBuildingId, pName, pPrice)
+    public Facility(int pBuildingId, 
+        string pName, 
+        string pDisplayStringActivated,
+        string pDisplayStringInactivated,
+        Resources pPrice) : base(pBuildingId, pName, pDisplayStringActivated, pDisplayStringInactivated, pPrice)
     {
 
     }
@@ -259,7 +287,11 @@ public class Facility : Building
 public class AdvFacility : Building
 {
 
-    public AdvFacility(int pBuildingId, string pName, Resources pPrice) : base(pBuildingId, pName, pPrice)
+    public AdvFacility(int pBuildingId,
+        string pName,
+        string pDisplayStringActivated,
+        string pDisplayStringInactivated,
+        Resources pPrice) : base(pBuildingId, pName, pDisplayStringActivated, pDisplayStringInactivated, pPrice)
     {
 
     }
