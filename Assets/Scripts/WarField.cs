@@ -53,10 +53,15 @@ public class EnemyAi : Ai{
 }
 
 public class OurAi : Ai{
+
+    private ResourceMaganer rm;
+    private ArrayList facs;
     public OurAi(int pHp, int pArmyNum)
     {
         this.hp = pHp;
         this.army = new Army(pArmyNum);
+        this.rm = new ResourceMaganer();
+        facs = new ArrayList();
     }
 
     public override int GetHp(){
@@ -73,6 +78,10 @@ public class OurAi : Ai{
 	public override Army GetArmy(){
 		return this.army;
 	}
+    public ResourceMaganer GetResourceManager()
+    {
+        return this.rm;
+    }
 }
 
 public class Army
@@ -141,32 +150,119 @@ public class AP
     }
 }
 
-public class Wallet
+public class ResourceMaganer
 {
-<<<<<<< HEAD
-	public int Electro = 0;
-	public int Ingot = 133;
-=======
-	public Wallet(){
-		this.resourceContainer = new int[5];
-	}
-	private int[] resourceContainer;
+    private Resources myResources;
 
->>>>>>> 63c66cfe00074728c6846900352a643f4c26ced6
+    public ResourceMaganer()
+    {
+        myResources = new Resources();
+    }
+    public bool PayResource(Resources invoice)
+    {
+        try
+        {
+            Resources temp = myResources.SubResources(invoice);
+            myResources = temp;
+        }
+        catch (System.Exception e)
+        {
+            Debug.Log(e.ToString());
+            return false;
+        }
+        return true;
+    }
+    public bool ReceiveResource(Resources income)
+    {
+        try{ 
+            myResources = myResources.AddResources(income);
+        }catch(System.Exception e)
+        {
+            Debug.Log( e.ToString());
+            return false;
+        }
+        return true;
+    }
+
 }
-public class Price
+public class Resources
 {
+    private int[] resources = new int[5];
+    
+    public Resources(int elec=0, int ore = 0, int mchips = 0, int ingot = 0, int nuke = 0)
+    {
+        this.resources[0] = elec;
+        this.resources[1] = ore;
+        this.resources[2] = mchips;
+        this.resources[3] = ingot;
+        this.resources[4] = nuke;
+    }
+    public int[] GetResources()
+    {
+        return (int[])this.resources.Clone();
+    }
+    public Resources AddResources(Resources newIncome)
+    {
+        int[] mine = this.GetResources();
+        int[] newOne = newIncome.GetResources();
+        for(int i = 0; i < mine.Length; i++)
+        {
+            mine[i] += newOne[i];
+        }
 
+        return new Resources(mine[0], mine[1], mine[2], mine[3], mine[4]);
+        
+    }
+    public Resources SubResources(Resources newPayment)
+    {
+        int[] mine = this.GetResources();
+        int[] newOne = newPayment.GetResources();
+        for (int i = 0; i < mine.Length; i++)
+        {
+            mine[i] -= newOne[i];
+            if(mine[i] < 0)
+            {
+                throw new System.Exception();
+            }
+        }
+        return new Resources(mine[0], mine[1], mine[2], mine[3], mine[4]);
+    }
 }
 public class Building
 {
-    
+    private string name;
+    private Resources price;
+
+    public Building(string pName, Resources pPrice)
+    {
+        this.name = pName;
+        this.price = pPrice;
+    }
+
+    public virtual void OnClickListener() {
+        Debug.Log("Building Object On Click");
+    }
 }
 public class Facility : Building
 {
+    public Facility(string pName, Resources pPrice) : base(pName, pPrice)
+    {
 
+    }
+    public override void OnClickListener()
+    {
+        Debug.Log("Facility Object On Click");
+    }
 }
 public class AdvFacility : Building
 {
 
+    public AdvFacility(string pName, Resources pPrice) : base(pName, pPrice)
+    {
+
+    }
+    public override void OnClickListener()
+    {
+        Debug.Log("AdvFacility Object On Click");
+    }
 }
