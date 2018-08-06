@@ -230,11 +230,13 @@ public class Resources
 }
 public class Building
 {
+    private int buildingId;
     private string name;
     private Resources price;
 
-    public Building(string pName, Resources pPrice)
+    public Building(int pBuildingId,string pName, Resources pPrice)
     {
+        this.buildingId = pBuildingId;
         this.name = pName;
         this.price = pPrice;
     }
@@ -245,7 +247,7 @@ public class Building
 }
 public class Facility : Building
 {
-    public Facility(string pName, Resources pPrice) : base(pName, pPrice)
+    public Facility(int pBuildingId, string pName, Resources pPrice) : base(pBuildingId, pName, pPrice)
     {
 
     }
@@ -257,7 +259,7 @@ public class Facility : Building
 public class AdvFacility : Building
 {
 
-    public AdvFacility(string pName, Resources pPrice) : base(pName, pPrice)
+    public AdvFacility(int pBuildingId, string pName, Resources pPrice) : base(pBuildingId, pName, pPrice)
     {
 
     }
