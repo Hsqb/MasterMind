@@ -1,8 +1,13 @@
 using UnityEngine;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using System.Linq.Expressions;
+using System;
+
+
+
 
 public class WarField {
 	public EnemyAi masterMind;
@@ -55,17 +60,18 @@ public class EnemyAi : Ai{
 
 public class OurAi : Ai{
 
-    private ResourceMaganer rm;
-    private ArrayList facs;
+    private ResourceManager rm;
+    private List<Facility> facs;
     private AP ap;
     public OurAi(int pHp, int pArmyNum)
     {
         this.hp = pHp;
         this.army = new Army(pArmyNum);
-        this.rm = new ResourceMaganer();
-        this.facs = new ArrayList();
-        this.InitFacs();
+        this.rm = new ResourceManager();
         this.ap = new AP();
+        this.facs = new List<Facility>();
+        this.InitFacs();
+        
     }
 
     public override int GetHp(){
@@ -82,16 +88,46 @@ public class OurAi : Ai{
 	public override Army GetArmy(){
 		return this.army;
 	}
-    public ResourceMaganer GetResourceManager()
+    public ResourceManager GetResourceManager()
     {
         return this.rm;
     }
+    public AP GetAP()
+    {
+        return this.ap;
+    }
+    public List<Facility> GetFaclilties()
+    {
+        return this.facs;
+    }
     private void InitFacs()
     {
-
+        LambdaFuncInt[] lfi = ConstantData.GetInstance().GetOnClickEvents();
+        string[][] st = ConstantData.GetInstance().GetFacilitiesInfo();
+        Resources temp;
+        for(int i = 0; i < st.Length; i++)
+        {
+            List<string> resourceList = new List<string>(st[i][2].Split(' '));
+            IEnumerable<Int32> resourceVal = resourceList.Select(x => Int32.Parse(x));
+            temp = new Resources(resourceVal.ToArray());
+            facs.Add(new Facility(Int32.Parse(st[i][0]), st[i][1],
+                st[i][1] + "\n(" + ")",
+                st[i][1] + "\n(" + this.rm.GetRequiredResourceString(temp) + ")",
+                temp, 
+                lfi[i]
+                )
+            );
+        }
     }
-
 }
+
+/*
+             "Power Plant\n(Electricity +3)",
+            "Ore Mine\n(Ore +1)",
+            "Micro Chips Plant\n(Ore -1 Micro Chips +2)",
+            "Ingot Plant\n(Ore -1 Ingot +1)",
+            "Newclear Silo\n(Ingot -2 Energy -3 Newclear +1)"
+     */
 
 public class Army
 {
@@ -116,11 +152,20 @@ public class AP
     private const int MAX_AP = 5;
     private const int INIT_AP = 2;
     private int currentAp;
-    private int currentMaxAP;
+    private int currentMaxAp;
     public AP()
     {
         this.currentAp = AP.INIT_AP;
-        this.currentMaxAP = AP.INIT_AP;
+        this.currentMaxAp = AP.INIT_AP;
+    }
+
+    public int GetCurrentAp()
+    {
+        return this.currentAp;
+    }
+    public int GetCurrentMaxAp()
+    {
+        return this.currentMaxAp;
     }
     public bool SubCurrentAp()
     {
@@ -141,32 +186,94 @@ public class AP
         }
         else
         {
-            this.currentAp = this.currentMaxAP;
+            this.currentAp = this.currentMaxAp;
             return true;
         }
     }
     public bool AddCurrentMaxAp()
     {
-        if (this.currentMaxAP >= AP.MAX_AP)
+        if (this.currentMaxAp >= AP.MAX_AP)
         {
             return false;
         }
         else
         {
-            this.currentMaxAP++;
+            this.currentMaxAp++;
+            return true;
+        }
+    }
+    public bool AddCurrentAp()
+    {
+        if (this.currentMaxAp <= this.currentAp)
+        {
+            return false;
+        }
+        else
+        {
+            this.currentMaxAp++;
             return true;
         }
     }
 }
 
-public class ResourceMaganer
+public class ResourceManager
 {
     private Resources myResources;
-
-    public ResourceMaganer()
+    public string[] resourcesName = new string[]
+    {
+            "Electric",
+            "Ore",
+            "MicroChips",
+            "Ingot",
+            "Newclear",
+    };
+    public ResourceManager()
     {
         myResources = new Resources();
     }
+
+    public string[] GetResourceDisplay()
+    {
+        string[] temp = (string[])resourcesName.Clone();
+        int[] resources = myResources.GetResources();
+        int longestLength= 0;
+        for(int i = 0; i < temp.Length; i++)
+        {
+            if(temp[i].Length > longestLength)
+            {
+                longestLength = temp[i].Length;
+            }
+        }
+        for (int i = 0; i < temp.Length; i++)
+        {
+            temp[i] = temp[i].PadRight(longestLength, ' ') + resources[i];
+        }
+        return temp;
+    }
+    public string GetRequiredResourceString(Resources r)
+    {
+        string[] temp = (string[])resourcesName.Clone();
+        string rtnVal = "(";
+        int[] resources = r.GetResources();
+        int longestLength = 0;
+        for (int i = 0; i < temp.Length; i++)
+        {
+            if (temp[i].Length > longestLength)
+            {
+                longestLength = temp[i].Length;
+            }
+        }
+
+        for (int i = 0; i < temp.Length; i++)
+        {
+            rtnVal += temp[i].PadRight(longestLength, ' ') + "-" + resources[i];
+            if (i < temp.Length - 1) rtnVal += " ";
+        }
+
+        return rtnVal+")";
+    }
+    
+
     public bool PayResource(Resources invoice)
     {
         try
@@ -197,7 +304,6 @@ public class ResourceMaganer
 public class Resources
 {
     private int[] resources = new int[5];
-    
     public Resources(int elec=0, int ore = 0, int mchips = 0, int ingot = 0, int nuke = 0)
     {
         this.resources[0] = elec;
@@ -205,6 +311,10 @@ public class Resources
         this.resources[2] = mchips;
         this.resources[3] = ingot;
         this.resources[4] = nuke;
+    }
+    public Resources(int[] resourceArr)
+    {
+        this.resources = (int[])resourceArr.Clone();
     }
     public int[] GetResources()
     {
@@ -239,11 +349,11 @@ public class Resources
 }
 public class Building
 {
-    private int buildingId;
-    private bool isActivated;
-    private string name;
-    private string displayStringActivated;
-    private string displayStringInactivated;
+    protected int buildingId;
+    protected bool isActivated;
+    protected string name;
+    protected string displayStringActivated;
+    protected string displayStringInactivated;
 
     private Resources price;
 
@@ -268,35 +378,42 @@ public class Building
     {
         return this.isActivated ? this.displayStringActivated : this.displayStringInactivated;
     }
+    public bool CheckIsActivated()
+    {
+        return this.isActivated;
+    }
+    public Resources GetPrice()
+    {
+        return this.price;
+    }
+    public string GetName()
+    {
+        return this.name;
+    }
+    public void Activate()
+    {
+        this.isActivated = true;
+    }
 }
+
 public class Facility : Building
 {
+    LambdaFuncInt onClickEvent;
     public Facility(int pBuildingId, 
         string pName, 
         string pDisplayStringActivated,
         string pDisplayStringInactivated,
-        Resources pPrice) : base(pBuildingId, pName, pDisplayStringActivated, pDisplayStringInactivated, pPrice)
+        Resources pPrice,
+        LambdaFuncInt onClickEvent) : base(pBuildingId, 
+            pName,
+            pDisplayStringActivated, 
+            pDisplayStringInactivated, 
+            pPrice)
     {
-
+        this.onClickEvent = onClickEvent;
     }
     public override void OnClickListener()
     {
-        Debug.Log("Facility Object On Click");
-    }
-}
-public class AdvFacility : Building
-{
-
-    public AdvFacility(int pBuildingId,
-        string pName,
-        string pDisplayStringActivated,
-        string pDisplayStringInactivated,
-        Resources pPrice) : base(pBuildingId, pName, pDisplayStringActivated, pDisplayStringInactivated, pPrice)
-    {
-
-    }
-    public override void OnClickListener()
-    {
-        Debug.Log("AdvFacility Object On Click");
+        this.onClickEvent(this.buildingId);
     }
 }
