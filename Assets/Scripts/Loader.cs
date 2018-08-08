@@ -10,6 +10,7 @@ public class Loader : MonoBehaviour {
 	// Use this for initialization
 	void Awake () 
 	{
+        Debug.Log("Loader");
 		if (GameManager.instance == null)
 			Instantiate (gameManager);
 

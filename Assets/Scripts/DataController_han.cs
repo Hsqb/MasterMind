@@ -23,6 +23,19 @@ public class DataController_han : MonoBehaviour {
         }
         return instance;
     }
+    public bool GetIsInteractable(Facility fac)
+    {
+        ResourceManager rm = field.warMachine.GetResourceManager();
+        return fac.CheckIsActivated() ?  rm.IsPayable(fac.GetCost()) : rm.IsPayable(fac.GetPrice());
+    }
+    public void CheckAP()
+    {
+        if(field.warMachine.GetAP().GetCurrentAp() < 1)
+        {
+            field.nextTurn();
+            field.warMachine.GetAP().ResetCurrentAp();
+        }
+    }
     public string GetDisplayAp()
     {
         int currentAp = field.warMachine.GetAP().GetCurrentAp();
@@ -40,12 +53,15 @@ public class DataController_han : MonoBehaviour {
 
     public void FacilityProduce(int facId)
     {
+        //Debug.Log("Fac Id : " + facId);
         try
         {
             if (field.warMachine.GetAP().SubCurrentAp())
             {
                 ResourceManager rm = field.warMachine.GetResourceManager();
                 Facility fac = field.warMachine.GetFaclilties()[(facId - 1)];
+                rm.PayResource(fac.GetCost());
+                rm.ReceiveResource(fac.GetProduct());
             }
         }
         catch (System.Exception e)

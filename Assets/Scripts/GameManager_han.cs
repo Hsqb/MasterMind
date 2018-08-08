@@ -7,81 +7,41 @@ using System.Reflection;
 public class GameManager_han : MonoBehaviour {
     public static GameManager_han instance;
 
-    public static GameManager_han GetInstance()
+    // Use this for initialization
+    private void Awake()
     {
-
         if (instance == null)
         {
-            instance = FindObjectOfType<GameManager_han>();
-
-            if (instance == null)
-            {
-                GameObject container = new GameObject("GameManager_han");
-
-                instance = container.AddComponent<GameManager_han>();
-
-            }
-
+            instance = this;
+            AttachEvent();
         }
-        return instance;
+        else if(instance != this)
+        {
+            Destroy(gameObject);
+        }
+        DontDestroyOnLoad(gameObject);
+        DataController_han.GetInstance();
+        
+            
     }
-
-    private string[] resourceTextArray = new string[] {
-        "Electric  ",
-        "Ore       ",
-        "MicroChips",
-        "Ingot     ",
-        "Newclear  ",
-        };
-
-    private string[,] facilityTextArray = new string[,] {
-        {
-            "Power Plant\n(Electricity +3)",
-            "Ore Mine\n(Ore +1)",
-            "Micro Chips Plant\n(Ore -1 Micro Chips +2)",
-            "Ingot Plant\n(Ore -1 Ingot +1)",
-            "Newclear Silo\n(Ingot -2 Energy -3 Newclear +1)"
-
-        },
-        {
-            "Active Power Plant\n(Electricity -3)",
-            "Active Ore Mind\n(Electricity -3)",
-            "Active Micro Chips Plant\n(Electricity -3)",
-            "Active Ingot Plant\n(Electricity -3)",
-             "Active Newclear Silo\n(Electricity -3)"
-        }
-        };
-
-    private string[,] advFacilityTextArray = new string[,] {
-        {
-            "Power Plant\n(Electricity +3)",
-            "Ore Mine\n(Ore +1)",
-            "Micro Chips Plant\n(Ore -1 Micro Chips +2)",
-            "Ingot Plant\n(Ore -1 Ingot +1)",
-            "Newclear Silo\n(Ingot -2 Energy -3 Newclear +1)"
-
-        },
-        {
-            "Active Power Plant\n(Electricity -3)",
-            "Active Ore Mind\n(Electricity -3)",
-            "Active Micro Chips Plant\n(Electricity -3)",
-            "Active Ingot Plant\n(Electricity -3)",
-            "Active Newclear Silo\n(Electricity -3)"
-        }
-        };
-
-
-    // Use this for initialization
-    private void Start()
+    //1초에 한번 갱신 Project Setting > Time 에서 수정가능
+    private void FixedUpdate()
     {
-        DataController.GetInstance().Initialize();
         Refresh();
+    }
+    private void AttachEvent()
+    {
+        List<Facility> facs = DataController_han.GetInstance().GetFacilities();
+        for (int j = 0; j < facs.Count; j++)
+        {
+            Debug.Log("attachEvent");
+            int k = j;
+            GameObject.Find("FacilityButton" + (j + 1)).GetComponent<Button>().onClick.AddListener(delegate { facs[k].OnClickListener(); });
+        }
     }
     public void Refresh()
     {
         // 화면을 새로운 값으로 갱신
-
-
         // AP값 갱신
         GameObject.Find("PlayerApText").GetComponent<Text>().text = DataController_han.GetInstance().GetDisplayAp();
         // 자원값 갱신
@@ -92,12 +52,16 @@ public class GameManager_han : MonoBehaviour {
         }
         // 건물 액티브 체크후 갱신
         List<Facility> facs = DataController_han.GetInstance().GetFacilities();
-        for(int i = 0; i < facs.Count; i++)
+        for(int j = 0; j < facs.Count; j++)
         {
-            GameObject.Find("FacilityButton" + (i + 1)).GetComponent<Button>().interactable = facs[i].CheckIsActivated();
-            GameObject.Find("FacilityText" + (i + 1)).GetComponent<Text>().text = facs[i].GetDisplayString();
+            GameObject.Find("FacilityButton" + (j + 1)).GetComponent<Button>().interactable = DataController_han.GetInstance().GetIsInteractable(facs[j]);
+            GameObject.Find("FacilityText" + (j + 1)).GetComponent<Text>().text = facs[j].GetDisplayString();
         }
 
         // 아마도 Army
+
+
+        //AP check
+        DataController_han.GetInstance().CheckAP();
     }
 }
