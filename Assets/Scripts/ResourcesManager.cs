@@ -20,7 +20,12 @@ public class ResourceManager
     {
         myResources = new Resources();
     }
-
+    public override string ToString()
+    {
+        int[] resourcesArr = myResources.GetResources();
+        List<int> l = new List<int>(resourcesArr);
+        return String.Join(" ",l.Select(x => x.ToString()).ToArray());
+    }
     public string[] GetResourceDisplay()
     {
         string[] temp = (string[])resourcesName.Clone();

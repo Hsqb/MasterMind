@@ -53,6 +53,7 @@ public class ConstantData
             }
             else
             {
+                //Debug.Log("LambdaFuncInt ActivateFacility id : " + id);
                 DataController_han.GetInstance().ActivateFacility(id);
                 //Debug.Log(fac.GetName() + " Is Activated!!");
                 //GameManager_han.GetInstance().Refresh();
