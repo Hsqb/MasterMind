@@ -39,6 +39,7 @@ public class GameManager_han : MonoBehaviour {
             GameObject.Find("FacilityButton" + (j + 1)).GetComponent<Button>().onClick.AddListener(delegate { facs[k].OnClickListener(); });
         }
         GameObject.Find("FacilityButton10").GetComponent<Button>().onClick.AddListener(delegate { DataController_han.GetInstance().SaveData(); });
+        GameObject.Find("FacilityButton11").GetComponent<Button>().onClick.AddListener(delegate { DataController_han.GetInstance().ResetData(); });
     }
     public void Refresh()
     {
@@ -63,7 +64,7 @@ public class GameManager_han : MonoBehaviour {
         // 아마도 Army
 
 
-        //AP check
+        //AP check 
         DataController_han.GetInstance().CheckAP();
     }
 }

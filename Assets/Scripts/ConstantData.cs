@@ -27,14 +27,14 @@ public class ConstantData
         {//id, Name, ActivatedRequiredResource, ProcessRequiredResource, 
             //ProcessRequiredArmy, ResultResource, ResultArmy
             new string[] {"1","Power Plant",           "1 0 0 0 0", "0 0 0 0 0", "0 0", "3 0 0 0 0", "0 0" },
-            new string[] {"2","Ore Mine",              "2 0 0 0 0", "0 0 0 0 0", "0 0", "0 1 0 0 0", "0 0" },
-            new string[] {"3","Micro Chips Plant",     "3 0 0 0 0", "0 1 0 0 0", "0 0", "0 0 2 0 0", "0 0" },
-            new string[] {"4","Ingot Plant",           "4 0 0 0 0", "0 1 0 0 0", "0 0", "0 0 0 1 0", "0 0" },
-            new string[] {"5","Newclear Silo",         "5 0 0 0 0", "3 0 0 2 0", "0 0", "0 0 0 0 1", "0 0" },
-            new string[] {"6","Adv Power Plant",       "0 1 0 0 0", "0 0 0 0 0", "0 0", "0 0 0 0 0", "0 0" },
-            new string[] {"7","Adv Ore Mine",          "0 1 0 0 0", "0 0 0 0 0", "0 0", "0 0 0 0 0", "0 0" },
-            new string[] {"8","Adv Micro Chips Plant", "3 0 0 2 0", "0 0 0 0 0", "0 0", "0 0 0 0 0", "0 0" },
-            new string[] {"9","Adv Ingot Plant",       "0 3 0 0 0", "0 0 0 0 0", "0 0", "0 0 0 0 0", "0 0" },
+            new string[] {"2","Ore Mine",              "3 0 0 0 0", "0 0 0 0 0", "0 0", "0 2 0 0 0", "0 0" },
+            new string[] {"3","Micro Chips Plant",     "3 1 0 0 0", "0 1 0 0 0", "0 0", "0 0 2 0 0", "0 0" },
+            new string[] {"4","Ingot Plant",           "5 2 0 0 0", "0 2 0 0 0", "0 0", "0 0 0 1 0", "0 0" },
+            new string[] {"5","Newclear Silo",         "5 0 0 3 0", "3 0 0 1 0", "0 0", "0 0 0 0 1", "0 0" },
+            new string[] {"6","WarBot Facility",       "3 0 2 0 0", "2 0 1 0 0", "0 0", "0 0 0 0 0", "1 0" },
+            new string[] {"7","Armory",                "5 0 0 1 0", "0 0 0 2 0", "1 0", "0 0 0 0 0", "0 1" },
+            new string[] {"8","Data Server",           "5 0 0 2 0", "5 0 0 3 0", "0 0", "0 0 0 0 0", "0 0" },
+            new string[] {"9","Missile Luancher",      "0 0 0 2 3", "0 0 0 0 1", "0 0", "0 0 0 0 0", "0 0" },
         };
     }
 

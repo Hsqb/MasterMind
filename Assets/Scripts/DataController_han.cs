@@ -117,6 +117,11 @@ public class DataController_han : MonoBehaviour {
         Debug.Log(field.warMachine.GetResourceManager().GetResourceDisplay()[0]);
     }
 
+    public void ResetData()
+    {
+        PlayerPrefs.SetString("SavedData", "");
+    }
+
     // Use this for initialization
     void Start () {
 	
