@@ -38,6 +38,7 @@ public class GameManager_han : MonoBehaviour {
             int k = j;
             GameObject.Find("FacilityButton" + (j + 1)).GetComponent<Button>().onClick.AddListener(delegate { facs[k].OnClickListener(); });
         }
+        GameObject.Find("FacilityButton10").GetComponent<Button>().onClick.AddListener(delegate { DataController_han.GetInstance().SaveData(); });
     }
     public void Refresh()
     {
@@ -48,6 +49,7 @@ public class GameManager_han : MonoBehaviour {
         string[] resourceValArr = DataController_han.GetInstance().GetResourceVals();
         for( int i = 0; i < resourceValArr.Length; i++)
         {
+            Debug.Log("resourceValArr[i] :" + resourceValArr[i]);
             GameObject.Find("ResourceText" + (i + 1)).GetComponent<Text>().text = resourceValArr[i];
         }
         // 건물 액티브 체크후 갱신

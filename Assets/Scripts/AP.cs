@@ -8,8 +8,8 @@ using System;
 
 public class AP
 {
-    private const int MAX_AP = 5;
-    private const int INIT_AP = 2;
+    public const int MAX_AP = 5;
+    public const int INIT_AP = 2;
     private int currentAp;
     private int currentMaxAp;
     public AP()
@@ -17,7 +17,6 @@ public class AP
         this.currentAp = AP.INIT_AP;
         this.currentMaxAp = AP.INIT_AP;
     }
-
     public int GetCurrentAp()
     {
         return this.currentAp;

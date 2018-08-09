@@ -26,6 +26,10 @@ public class ResourceManager
         List<int> l = new List<int>(resourcesArr);
         return String.Join(" ",l.Select(x => x.ToString()).ToArray());
     }
+    public Resources ToResource(string resourcesStr)
+    {
+        return new Resources( new List<string>(resourcesStr.Split(' ')).Select(x => Int32.Parse(x)).ToArray());
+    }
     public string[] GetResourceDisplay()
     {
         string[] temp = (string[])resourcesName.Clone();
@@ -89,9 +93,10 @@ public class ResourceManager
     }
     public bool ReceiveResource(Resources income)
     {
-        try{ 
+        try{
             myResources = myResources.AddResources(income);
-        }catch(System.Exception e)
+        }
+        catch(System.Exception e)
         {
             Debug.Log( e.ToString());
             return false;

@@ -11,13 +11,10 @@ public class DataController_han : MonoBehaviour {
         if (instance == null)
         {
             instance = FindObjectOfType<DataController_han>();
-
             if (instance == null)
             {
                 GameObject container = new GameObject("DataController_han");
-
                 instance = container.AddComponent<DataController_han>();
-
             }
 
         }
@@ -43,6 +40,7 @@ public class DataController_han : MonoBehaviour {
     }
     public string[] GetResourceVals()
     {
+        Debug.Log("dcgerres"+field.warMachine.GetResourceManager().GetResourceDisplay()[0]);
         return field.warMachine.GetResourceManager().GetResourceDisplay();
 
     }
@@ -97,11 +95,26 @@ public class DataController_han : MonoBehaviour {
         }
 
     }
-
+    public void SaveData()
+    {
+        PlayerPrefs.SetString("SavedData", field.Stringify());
+    }
     //exe when script is being loaded.
     void Awake()
     {
+        string s = PlayerPrefs.GetString("SavedData");
+        Debug.Log("Called DC_han : awake : "+s);
         field = new WarField();
+        if ( s.Equals(""))
+        {
+            Debug.Log("No Save Data");
+        }
+        else
+        {
+            Debug.Log("Save Data is.");
+            field.Parse(s);//mightWillBeCapsuled;
+        }
+        Debug.Log(field.warMachine.GetResourceManager().GetResourceDisplay()[0]);
     }
 
     // Use this for initialization
