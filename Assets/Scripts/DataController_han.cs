@@ -6,6 +6,7 @@ public class DataController_han : MonoBehaviour {
     private WarField field;
     private static DataController_han instance;
 
+
     public static DataController_han GetInstance()
     {
         if (instance == null)
@@ -31,6 +32,7 @@ public class DataController_han : MonoBehaviour {
         {
             field.nextTurn();
             field.warMachine.GetAP().ResetCurrentAp();
+            field.nextTurnImage();
         }
     }
     public string GetDisplayAp()
