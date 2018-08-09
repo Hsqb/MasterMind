@@ -6,19 +6,13 @@ using UnityEngine.UI;
 using System.Linq.Expressions;
 using System;
 
-<<<<<<< HEAD
-public class WarField : MonoBehaviour {
-    private static int version = 1;
-=======
 public class WarField {
     private static int version = 2;
->>>>>>> 4828d2b255fd2e81811b675b145457567567cfd5
+
 	public EnemyAi masterMind;
 	public OurAi warMachine;
 	private int turn;
-    private Text turnText;
-	private GameObject turnImage;
-	public float turnStartDelay = 2f;
+
 
 	public WarField(){
 		turn = 1;
@@ -33,31 +27,6 @@ public class WarField {
 		this.turn++;
 	}
 
-    public void nextTurnImage(){
-        turnText = GameObject.Find ("TurnText").GetComponent<Text>();
-		turnImage = GameObject.Find ("TurnImage");
-        //turnImage = GameObject.Find ("TurnImage").GetComponent<Image>();
-
-		turnText.text = "Turn" + this.turn;
-
-        turnImage.SetActive(true);
-		
-		Invoke("HideTurnImage",turnStartDelay);
-//        yield return new WaitForSeconds(2);
-//		turnImage.SetActive(false);
-    }
-	void SetTurnImage()
-	{
-		turnImage = GameObject.Find ("TurnImage");
-		turnImage.SetActive (true);
-	}
-
-	void HideTurnImage()
-	{
-        turnImage = GameObject.Find ("TurnImage");
-		turnImage.SetActive (false);
-	}
-	
     public string Stringify()
     {
         /*

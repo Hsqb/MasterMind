@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
 
 public class DataController_han : MonoBehaviour {
     private WarField field;
@@ -26,14 +27,28 @@ public class DataController_han : MonoBehaviour {
         ResourceManager rm = field.warMachine.GetResourceManager();
         return fac.CheckIsActivated() ?  rm.IsPayable(fac.GetCost()) : rm.IsPayable(fac.GetPrice());
     }
-    public void CheckAP()
+
+    public string GetDisplayTurn()
     {
-        if(field.warMachine.GetAP().GetCurrentAp() < 1)
+        return "Turn " + field.GetCurrentTurn();
+    }
+
+
+    public bool CheckAP()
+    {
+        try { 
+            if(field.warMachine.GetAP().GetCurrentAp() < 1)
+            {
+                field.nextTurn();
+                field.warMachine.GetAP().ResetCurrentAp();
+                return true;
+            }
+         
+        }catch(Exception e)
         {
-            field.nextTurn();
-            field.warMachine.GetAP().ResetCurrentAp();
-            field.nextTurnImage();
+            Debug.LogError(e);
         }
+        return false;
     }
     public string GetDisplayAp()
     {

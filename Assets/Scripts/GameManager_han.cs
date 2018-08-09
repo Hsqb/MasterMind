@@ -65,6 +65,30 @@ public class GameManager_han : MonoBehaviour {
 
 
         //AP check 
-        DataController_han.GetInstance().CheckAP();
+        if (DataController_han.GetInstance().CheckAP()) {
+            this.nextTurnImage();
+        };
+        GameObject.Find("TurnImage").GetComponent<Image>().enabled = isOnNextTurnImage;
+        GameObject.Find("TurnText").GetComponent<Text>().enabled = isOnNextTurnText;
+        GameObject.Find("TurnText").GetComponent<Text>().text = isOnNextTurnText ? DataController_han.GetInstance().GetDisplayTurn():"";
+    }
+    private bool isOnNextTurnImage = false;
+    private bool isOnNextTurnText  = false;
+    
+    private void nextTurnImage()
+    {
+        SetTurnImage();
+        Invoke("HideTurnImage", 2f);
+    }
+    private void SetTurnImage()
+    {
+        isOnNextTurnImage = true;
+        isOnNextTurnText = true;
+    }
+
+    private void HideTurnImage()
+    {
+        isOnNextTurnImage = false;
+        isOnNextTurnText = false;
     }
 }
